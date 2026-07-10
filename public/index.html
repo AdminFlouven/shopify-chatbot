@@ -106,7 +106,10 @@ function addMessage(role,text){
 function escapeHtml(t){
   const d=document.createElement("div");
   d.textContent=t;
-  return d.innerHTML.replace(/\n/g,"<br>");
+  return d.innerHTML
+    .replace(/\n/g,"<br>")
+    .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g,"<em>$1</em>");
 }
 
 function showTyping(){
