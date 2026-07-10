@@ -16,8 +16,9 @@
   .chat-messages{flex:1;overflow-y:auto;padding:60px 20px 20px;background:#fff}
   .msg{display:flex;margin-bottom:16px;gap:10px;align-items:flex-start}
   .msg.user{flex-direction:row-reverse}
-  .avatar{width:40px;height:40px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:0.5px}
-  .msg.user .avatar{background:#e5e7eb;color:#374151}
+  .avatar{width:40px;height:40px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+  .avatar svg{width:26px;height:auto}
+  .msg.user .avatar{background:#e5e7eb;color:#374151;font-size:11px;font-weight:700;letter-spacing:0.5px}
   .msg-content{max-width:75%;display:flex;flex-direction:column}
   .msg.user .msg-content{align-items:flex-end}
   .msg-bubble{background:#f3f4f6;color:#111827;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5;word-break:break-word;white-space:pre-wrap}
@@ -67,6 +68,8 @@ const API_URL="/api/chat";
 const MAX_MESSAGES=20;
 let messages=[],isLoading=false,hasStarted=false;
 
+const LOGO_101='<svg xmlns="http://www.w3.org/2000/svg" viewBox="739 397 460 194" fill="#fff"><path d="M739.8,590.49v-27.96h55.92v-126.1c0-3.17-1.54-6.29-4.61-9.37-3.08-3.07-6.2-4.61-9.37-4.61h-27.96v-27.96h27.96c10.81,0,20.5,4.29,29.08,12.86,8.57,8.58,12.86,18.27,12.86,29.08v126.1h55.92v27.96h-139.8Z"/><path d="M1074.75,590.49v-27.96h55.92v-126.1c0-3.17-1.54-6.29-4.61-9.37-3.08-3.07-6.2-4.61-9.37-4.61h-27.96v-27.96h27.96c10.81,0,20.5,4.29,29.08,12.86,8.57,8.58,12.86,18.27,12.86,29.08v126.1h55.92v27.96h-139.8Z"/><path d="M907.27,548.42v-68.4l27.96,27.68v40.72c0,3.17,1.54,6.29,4.61,9.37,3.08,3.08,6.2,4.61,9.37,4.61h55.92c5.59,0,9.88-3.07,12.86-9.23l-82.76-82.76-27.96-27.68v-6.15c0-10.63,4.28-20.23,12.86-28.8,8.76-8.76,18.45-13.14,29.08-13.14h55.92c10.81,0,20.5,4.29,29.08,12.86,8.57,8.58,12.86,18.27,12.86,29.08v68.4l-27.96-27.68v-40.72c0-3.17-1.54-6.29-4.61-9.37-3.07-3.07-6.2-4.61-9.37-4.61h-55.92c-5.59,0-9.88,3.17-12.86,9.51l82.76,82.48,27.96,27.68v6.15c0,10.82-4.29,20.5-12.86,29.08-8.39,8.58-18.08,12.86-29.08,12.86h-55.92c-11,0-20.79-4.28-29.36-12.86-8.39-8.58-12.58-18.26-12.58-29.08Z"/></svg>';
+
 function currentTime(){
   const d=new Date();
   return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
@@ -88,9 +91,9 @@ function addMessage(role,text){
   const c=document.getElementById("chat-messages");
   const div=document.createElement("div");
   div.className=`msg ${role==="user"?"user":"bot"}`;
-  const avatarText=role==="user"?"TÚ":"101";
+  const avatarContent=role==="user"?"TÚ":LOGO_101;
   div.innerHTML=`
-    <div class="avatar">${avatarText}</div>
+    <div class="avatar">${avatarContent}</div>
     <div class="msg-content">
       <div class="msg-bubble">${escapeHtml(text)}</div>
       <div class="msg-time">${currentTime()}</div>
@@ -112,7 +115,7 @@ function showTyping(){
   div.id="typing";
   div.className="msg bot";
   div.innerHTML=`
-    <div class="avatar">101</div>
+    <div class="avatar">${LOGO_101}</div>
     <div class="msg-content"><div class="typing"><span></span><span></span><span></span></div></div>
   `;
   c.appendChild(div);
