@@ -78,6 +78,10 @@ function currentTime(){
 function toggleChat(){
   const w=document.getElementById("chat-window"),t=document.getElementById("chat-toggle"),o=w.classList.toggle("open");
   t.style.display=o?"none":"flex";
+  // Avisar al iframe padre para redimensionar
+  if(window.parent!==window){
+    window.parent.postMessage(o?"chat-open":"chat-close","*");
+  }
   if(o){
     if(!hasStarted){
       addMessage("bot","¡Hola! ¿Cómo puedo ayudarte?");
@@ -106,10 +110,7 @@ function addMessage(role,text){
 function escapeHtml(t){
   const d=document.createElement("div");
   d.textContent=t;
-  return d.innerHTML
-    .replace(/\n/g,"<br>")
-    .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
-    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g,"<em>$1</em>");
+  return d.innerHTML.replace(/\n/g,"<br>");
 }
 
 function showTyping(){
